@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:signrecognizer/pages/welcome_page.dart';
 import 'firebase_options.dart';
 import 'package:signrecognizer/pages/login_page.dart';
 
@@ -24,7 +25,7 @@ class SignRecognizerApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Colors.grey[100],
       ),
-      home: LoginPage(),
+      home: WelcomePage(),
     );
   }
 }
