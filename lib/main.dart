@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:signrecognizer/pages/welcome_page.dart';
 import 'firebase_options.dart';
-import 'package:signrecognizer/pages/login_page.dart';
+import 'package:camera/camera.dart';
+import 'pages/login_page.dart';
 
-void main() async {
+List<CameraDescription> cameras = [];
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase before running the app
+  // Initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Get available cameras
+  cameras = await availableCameras();
 
   runApp(SignRecognizerApp());
 }
@@ -25,7 +31,7 @@ class SignRecognizerApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Colors.grey[100],
       ),
-      home: WelcomePage(),
+      home: WelcomePage(cameras: cameras),
     );
   }
 }

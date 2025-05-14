@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:signrecognizer/pages/login_page.dart';
+import 'package:camera/camera.dart';
+
+import '../main.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  final List<CameraDescription> cameras;
+
+  const RegisterPage({super.key, required this.cameras});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -18,6 +23,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _nameController = TextEditingController();
   bool agreePersonalData = true;
 
+  final Color primaryColor = const Color(0xFF502466);
+
   Future<void> _register() async {
     try {
       if (_formSignupKey.currentState!.validate() && agreePersonalData) {
@@ -25,9 +32,8 @@ class _RegisterPageState extends State<RegisterPage> {
           email: _emailController.text,
           password: _passwordController.text,
         );
-
-        // You can add more code here to save the user profile in Firestore if needed.
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (e) => LoginPage(cameras: widget.cameras)),
+        );
       } else if (!agreePersonalData) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -48,11 +54,10 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.deepPurple.shade700, Colors.deepPurple.shade900],
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg2.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Column(
@@ -85,12 +90,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.w900,
-                            color: Colors.deepPurple.shade700,
+                            color: primaryColor,
                           ),
                         ),
-                        const SizedBox(
-                          height: 40.0,
-                        ),
+                        const SizedBox(height: 40.0),
+                        // Name field with example hint
                         TextFormField(
                           controller: _nameController,
                           validator: (value) {
@@ -100,28 +104,21 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                           decoration: InputDecoration(
-                            label: const Text('Nom Complet'),
-                            hintText: 'Entrez votre nom complet',
-                            hintStyle: const TextStyle(
-                              color: Colors.black26,
-                            ),
+                            prefixIcon: Icon(Icons.person, color: primaryColor),
+                            hintText: 'Ex : Marie Dupont',
+                            hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
+                              borderSide: const BorderSide(color: Colors.black12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
+                              borderSide: const BorderSide(color: Colors.black12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
+                        // Email field with example hint
                         TextFormField(
                           controller: _emailController,
                           validator: (value) {
@@ -131,28 +128,21 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                           decoration: InputDecoration(
-                            label: const Text('Email'),
-                            hintText: 'Entrez votre email',
-                            hintStyle: const TextStyle(
-                              color: Colors.black26,
-                            ),
+                            prefixIcon: Icon(Icons.email, color: primaryColor),
+                            hintText: 'Ex : marie.dupont@example.com',
+                            hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
+                              borderSide: const BorderSide(color: Colors.black12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
+                              borderSide: const BorderSide(color: Colors.black12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
+                        // Password field with example hint
                         TextFormField(
                           controller: _passwordController,
                           obscureText: true,
@@ -164,28 +154,20 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                           decoration: InputDecoration(
-                            label: const Text('Mot de passe'),
-                            hintText: 'Entrez votre mot de passe',
-                            hintStyle: const TextStyle(
-                              color: Colors.black26,
-                            ),
+                            prefixIcon: Icon(Icons.lock, color: primaryColor),
+                            hintText: 'Ex : ••••••••',
+                            hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
+                              borderSide: const BorderSide(color: Colors.black12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
+                              borderSide: const BorderSide(color: Colors.black12),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
                         Row(
                           children: [
                             Checkbox(
@@ -195,31 +177,27 @@ class _RegisterPageState extends State<RegisterPage> {
                                   agreePersonalData = value!;
                                 });
                               },
-                              activeColor: Colors.deepPurple.shade700,
+                              activeColor: primaryColor,
                             ),
                             const Text(
                               "J'accepte le traitement des ",
-                              style: TextStyle(
-                                color: Colors.black45,
-                              ),
+                              style: TextStyle(color: Colors.black45),
                             ),
                             Text(
                               'données personnelles',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.deepPurple.shade700,
+                                color: primaryColor,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurple.shade700,
+                              backgroundColor: primaryColor,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
@@ -230,9 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: const Text('Créer un compte'),
                           ),
                         ),
-                        const SizedBox(
-                          height: 30.0,
-                        ),
+                        const SizedBox(height: 30.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -243,15 +219,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             const Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 0,
-                                horizontal: 10,
-                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 "S'inscrire avec",
-                                style: TextStyle(
-                                  color: Colors.black45,
-                                ),
+                                style: TextStyle(color: Colors.black45),
                               ),
                             ),
                             Expanded(
@@ -262,9 +233,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 30.0,
-                        ),
+                        const SizedBox(height: 30.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -274,40 +243,33 @@ class _RegisterPageState extends State<RegisterPage> {
                             Logo(Logos.apple),
                           ],
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
                               'Vous avez déjà un compte? ',
-                              style: TextStyle(
-                                color: Colors.black45,
-                              ),
+                              style: TextStyle(color: Colors.black45),
                             ),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (e) => const LoginPage(),
-                                  ),
+                                  MaterialPageRoute(builder: (e) => LoginPage(cameras: widget.cameras)),
+
                                 );
                               },
                               child: Text(
                                 'Se connecter',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple.shade700,
+                                  color: primaryColor,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+                        const SizedBox(height: 20.0),
                       ],
                     ),
                   ),

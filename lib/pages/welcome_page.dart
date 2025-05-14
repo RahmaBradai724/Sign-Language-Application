@@ -1,121 +1,132 @@
 import 'package:flutter/material.dart';
-import 'package:signrecognizer/pages/login_page.dart';
-import 'package:signrecognizer/pages/register_page.dart';
+import 'login_page.dart';
+import 'register_page.dart';
+import 'package:camera/camera.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
+  final List<CameraDescription> cameras;
+  const WelcomePage({super.key, required this.cameras});
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.deepPurple.shade700, Colors.deepPurple.shade900],
+      body: Stack(
+        children: [
+          // Background image
+          SizedBox.expand(
+            child: Image.asset(
+              'assets/bg2.png', // Make sure this matches your actual path
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Flexible(
-              flex: 8,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 40.0,
-                ),
-                child: Center(
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: const TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Bienvenue!\n',
-                          style: TextStyle(
-                            fontSize: 45.0,
-                            fontWeight: FontWeight.w600,
-                          ),
+
+          // Foreground content
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(), // Fills top space
+
+                // Welcome Text
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Column(
+                    children: const [
+                      Text(
+                        'Bienvenue',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 42,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
-                        TextSpan(
-                          text: '\nCette application traduit la langue des signes en texte et voix.',
-                          style: TextStyle(
-                            fontSize: 20,
-                          ),
+                      ),
+                      SizedBox(height: 15),
+                      Text(
+                        'Cette application traduit la langue des signes en texte et voix',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white70,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (e) => LoginPage(),
+
+                // Buttons at bottom
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    bottom: 40,
+                  ),
+                  child: Row(
+                    children: [
+                      // Se connecter button
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(cameras: cameras),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFB39DDB),
+                            foregroundColor: Colors.deepPurple[900],
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 24),
-                          alignment: Alignment.center,
+                          ),
                           child: const Text(
                             'Se connecter',
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (e) => RegisterPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 24),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
+                      const SizedBox(width: 15),
+                      // S'inscrire button
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RegisterPage(cameras: cameras),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE1BEE7),
+                            foregroundColor: Colors.deepPurple[900],
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
                           ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "S'inscrire",
+                          child: const Text(
+                            'S\'inscrire',
                             style: TextStyle(
-                              color: Colors.deepPurple.shade700,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

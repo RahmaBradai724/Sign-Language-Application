@@ -1,3 +1,6 @@
+// lib/pages/login_page.dart
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -5,7 +8,9 @@ import 'package:signrecognizer/pages/home_page.dart';
 import 'package:signrecognizer/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final List<CameraDescription> cameras;
+
+  const LoginPage({super.key, required this.cameras});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -18,6 +23,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool rememberPassword = true;
 
+  final Color primaryColor = const Color(0xFF502466);
+
   Future<void> _signIn() async {
     try {
       if (_formSignInKey.currentState!.validate()) {
@@ -25,7 +32,19 @@ class _LoginPageState extends State<LoginPage> {
           email: _emailController.text,
           password: _passwordController.text,
         );
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => StaticHomePage()));
+
+        Navigator.of(context).pushReplacement(
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 500),
+            pageBuilder: (context, animation, secondaryAnimation) => StaticHomePage(cameras: widget.cameras),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+        );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -40,21 +59,15 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.deepPurple.shade700, Colors.deepPurple.shade900],
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/bg2.png'),
+            fit: BoxFit.cover,
           ),
         ),
         child: Column(
           children: [
-            const Expanded(
-              flex: 1,
-              child: SizedBox(
-                height: 10,
-              ),
-            ),
+            const Expanded(flex: 1, child: SizedBox(height: 10)),
             Expanded(
               flex: 7,
               child: Container(
@@ -77,12 +90,11 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.w900,
-                            color: Colors.deepPurple.shade700,
+                            color: primaryColor,
                           ),
                         ),
-                        const SizedBox(
-                          height: 40.0,
-                        ),
+                        const SizedBox(height: 40.0),
+                        // Email field with example hint
                         TextFormField(
                           controller: _emailController,
                           validator: (value) {
@@ -92,28 +104,19 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                           decoration: InputDecoration(
-                            label: const Text('Email'),
-                            hintText: 'Entrez votre email',
-                            hintStyle: const TextStyle(
-                              color: Colors.black26,
-                            ),
+                            prefixIcon: Icon(Icons.email, color: primaryColor),
+                            hintText: 'Ex : marie.dupont@example.com',
+                            hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
+                        // Password field with example hint
                         TextFormField(
                           controller: _passwordController,
                           obscureText: true,
@@ -125,28 +128,18 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                           decoration: InputDecoration(
-                            label: const Text('Mot de passe'),
-                            hintText: 'Entrez votre mot de passe',
-                            hintStyle: const TextStyle(
-                              color: Colors.black26,
-                            ),
+                            prefixIcon: Icon(Icons.lock, color: primaryColor),
+                            hintText: 'Ex : ••••••••',
+                            hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                color: Colors.black12,
-                              ),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -159,35 +152,34 @@ class _LoginPageState extends State<LoginPage> {
                                       rememberPassword = value!;
                                     });
                                   },
-                                  activeColor: Colors.deepPurple.shade700,
+                                  activeColor: primaryColor,
                                 ),
                                 const Text(
                                   'Se souvenir de moi',
-                                  style: TextStyle(
-                                    color: Colors.black45,
-                                  ),
+                                  style: TextStyle(color: Colors.black45),
                                 ),
                               ],
                             ),
                             GestureDetector(
+                              onTap: () {
+                                // Implement password reset logic here
+                              },
                               child: Text(
                                 'Mot de passe oublié?',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple.shade700,
+                                  color: primaryColor,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.deepPurple.shade700,
+                              backgroundColor: primaryColor,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
@@ -198,9 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: const Text('Se connecter'),
                           ),
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -211,15 +201,10 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             const Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 0,
-                                horizontal: 10,
-                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 'Ou connectez-vous avec',
-                                style: TextStyle(
-                                  color: Colors.black45,
-                                ),
+                                style: TextStyle(color: Colors.black45),
                               ),
                             ),
                             Expanded(
@@ -230,9 +215,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -242,24 +225,21 @@ class _LoginPageState extends State<LoginPage> {
                             Logo(Logos.apple),
                           ],
                         ),
-                        const SizedBox(
-                          height: 25.0,
-                        ),
+                        const SizedBox(height: 25.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
                               'Pas encore de compte? ',
-                              style: TextStyle(
-                                color: Colors.black45,
-                              ),
+                              style: TextStyle(color: Colors.black45),
                             ),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (e) => const RegisterPage(),
+                                    builder: (_) => RegisterPage(cameras: widget.cameras),
+
                                   ),
                                 );
                               },
@@ -267,15 +247,13 @@ class _LoginPageState extends State<LoginPage> {
                                 "S'inscrire",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple.shade700,
+                                  color: primaryColor,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
+                        const SizedBox(height: 20.0),
                       ],
                     ),
                   ),
