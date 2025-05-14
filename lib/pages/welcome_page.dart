@@ -3,6 +3,7 @@ import 'package:signrecognizer/l10n/app_localizations.dart';
 import 'package:signrecognizer/pages/login_page.dart';
 import 'package:signrecognizer/pages/register_page.dart';
 import 'package:camera/camera.dart';
+import 'package:signrecognizer/widgets/welcome_button.dart';
 
 class WelcomePage extends StatelessWidget {
   final List<CameraDescription> cameras;
@@ -51,9 +52,13 @@ class WelcomePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 40),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: ElevatedButton(
+                    SizedBox(
+                      width: 140,
+                      height: 60,
+                      child: WelcomeButton(
+                        text: AppLocalizations.of(context)!.login,
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -62,26 +67,16 @@ class WelcomePage extends StatelessWidget {
                             ),
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFB39DDB),
-                          foregroundColor: Colors.deepPurple[900],
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.login,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        backgroundColor: const Color(0xFFB39DDB),
+                        textColor: Colors.deepPurple[900]!,
                       ),
                     ),
                     const SizedBox(width: 15),
-                    Expanded(
-                      child: ElevatedButton(
+                    SizedBox(
+                      width: 140,
+                      height: 60,
+                      child: WelcomeButton(
+                        text: AppLocalizations.of(context)!.register,
                         onPressed: () {
                           Navigator.push(
                             context,
@@ -90,21 +85,8 @@ class WelcomePage extends StatelessWidget {
                             ),
                           );
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE1BEE7),
-                          foregroundColor: Colors.deepPurple[900],
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.register,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
+                        backgroundColor: const Color(0xFFE1BEE7),
+                        textColor: Colors.deepPurple[900]!,
                       ),
                     ),
                   ],

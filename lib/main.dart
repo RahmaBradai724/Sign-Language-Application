@@ -7,7 +7,7 @@ import 'firebase_options.dart';
 import 'package:camera/camera.dart';
 import 'providers/locale_provider.dart';
 import 'package:signrecognizer/l10n/app_localizations.dart';
-import 'widgets/language_switcher.dart';
+import 'widgets/language_switcher.dart'; // Import the LanguageSwitcher
 
 List<CameraDescription> cameras = [];
 
@@ -25,24 +25,33 @@ Future<void> main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => LocaleProvider(),
-      child: const SignRecognizerApp(),
+      child: SignRecognizerApp(),
     ),
   );
 }
 
 class SignRecognizerApp extends StatelessWidget {
-  const SignRecognizerApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Consumer<LocaleProvider>(
       builder: (context, localeProvider, child) {
-        // Determine text direction based on locale
-        final textDirection =
-        localeProvider.locale.languageCode == 'ar' ? TextDirection.rtl : TextDirection.ltr;
-
         return MaterialApp(
+          title: 'Reconnaissance de Signes',
           debugShowCheckedModeBanner: false,
+          // Add AppBar with LanguageSwitcher
+          home: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.deepPurple.withOpacity(0.8),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LanguageSwitcher(textColor: Colors.white),
+                ),
+              ],
+            ),
+            body: WelcomePage(cameras: cameras),
+          ),
+          // Localization settings
           locale: localeProvider.locale,
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -51,36 +60,12 @@ class SignRecognizerApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: const [
-            Locale('fr'),
-            Locale('ar'),
+            Locale('fr'), // French
+            Locale('ar'), // Arabic
           ],
           theme: ThemeData(
             primarySwatch: Colors.deepPurple,
             scaffoldBackgroundColor: Colors.grey[100],
-          ),
-          // Use Builder to ensure context has access to localization delegates
-          home: Builder(
-            builder: (BuildContext context) {
-              return Directionality(
-                textDirection: textDirection,
-                child: Scaffold(
-                  appBar: AppBar(
-                    backgroundColor: Colors.deepPurple.withOpacity(0.8),
-                    title: Text(
-                      AppLocalizations.of(context)!.appTitle,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    actions: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: LanguageSwitcher(textColor: Colors.white),
-                      ),
-                    ],
-                  ),
-                  body: WelcomePage(cameras: cameras),
-                ),
-              );
-            },
           ),
         );
       },
