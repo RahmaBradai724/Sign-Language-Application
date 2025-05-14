@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:signrecognizer/l10n/app_localizations.dart';
 import 'package:signrecognizer/pages/login_page.dart';
 import 'package:camera/camera.dart';
-
-import '../main.dart';
 
 class RegisterPage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -32,12 +31,14 @@ class _RegisterPageState extends State<RegisterPage> {
           email: _emailController.text,
           password: _passwordController.text,
         );
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (e) => LoginPage(cameras: widget.cameras)),
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (e) => LoginPage(cameras: widget.cameras)),
         );
       } else if (!agreePersonalData) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Veuillez accepter le traitement des données personnelles'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.pleaseAcceptTerms),
           ),
         );
       }
@@ -64,9 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             const Expanded(
               flex: 1,
-              child: SizedBox(
-                height: 10,
-              ),
+              child: SizedBox(height: 10),
             ),
             Expanded(
               flex: 7,
@@ -86,7 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Inscription',
+                          AppLocalizations.of(context)!.register,
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.w900,
@@ -94,18 +93,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         const SizedBox(height: 40.0),
-                        // Name field with example hint
                         TextFormField(
                           controller: _nameController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre nom complet';
+                              return AppLocalizations.of(context)!.pleaseEnterName;
                             }
                             return null;
                           },
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.person, color: primaryColor),
-                            hintText: 'Ex : Marie Dupont',
+                            hintText: AppLocalizations.of(context)!.nameExample,
                             hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.black12),
@@ -118,18 +116,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         const SizedBox(height: 25.0),
-                        // Email field with example hint
                         TextFormField(
                           controller: _emailController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre email';
+                              return AppLocalizations.of(context)!.pleaseEnterEmail;
                             }
                             return null;
                           },
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.email, color: primaryColor),
-                            hintText: 'Ex : marie.dupont@example.com',
+                            hintText: AppLocalizations.of(context)!.emailExample,
                             hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.black12),
@@ -142,20 +139,19 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         const SizedBox(height: 25.0),
-                        // Password field with example hint
                         TextFormField(
                           controller: _passwordController,
                           obscureText: true,
                           obscuringCharacter: '*',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre mot de passe';
+                              return AppLocalizations.of(context)!.pleaseEnterPassword;
                             }
                             return null;
                           },
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock, color: primaryColor),
-                            hintText: 'Ex : ••••••••',
+                            hintText: AppLocalizations.of(context)!.passwordExample,
                             hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.black12),
@@ -179,12 +175,12 @@ class _RegisterPageState extends State<RegisterPage> {
                               },
                               activeColor: primaryColor,
                             ),
-                            const Text(
-                              "J'accepte le traitement des ",
-                              style: TextStyle(color: Colors.black45),
+                            Text(
+                              AppLocalizations.of(context)!.iAccept,
+                              style: const TextStyle(color: Colors.black45),
                             ),
                             Text(
-                              'données personnelles',
+                              AppLocalizations.of(context)!.personalData,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: primaryColor,
@@ -205,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                             ),
                             onPressed: _register,
-                            child: const Text('Créer un compte'),
+                            child: Text(AppLocalizations.of(context)!.createAccount),
                           ),
                         ),
                         const SizedBox(height: 30.0),
@@ -218,11 +214,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 color: Colors.grey.withOpacity(0.5),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                "S'inscrire avec",
-                                style: TextStyle(color: Colors.black45),
+                                AppLocalizations.of(context)!.registerWith,
+                                style: const TextStyle(color: Colors.black45),
                               ),
                             ),
                             Expanded(
@@ -247,20 +243,19 @@ class _RegisterPageState extends State<RegisterPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Vous avez déjà un compte? ',
-                              style: TextStyle(color: Colors.black45),
+                            Text(
+                              AppLocalizations.of(context)!.haveAccount,
+                              style: const TextStyle(color: Colors.black45),
                             ),
                             GestureDetector(
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (e) => LoginPage(cameras: widget.cameras)),
-
                                 );
                               },
                               child: Text(
-                                'Se connecter',
+                                AppLocalizations.of(context)!.login,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: primaryColor,

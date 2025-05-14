@@ -1,9 +1,8 @@
-// lib/pages/login_page.dart
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:signrecognizer/l10n/app_localizations.dart';
 import 'package:signrecognizer/pages/home_page.dart';
 import 'package:signrecognizer/pages/register_page.dart';
 
@@ -32,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
           email: _emailController.text,
           password: _passwordController.text,
         );
-
         Navigator.of(context).pushReplacement(
           PageRouteBuilder(
             transitionDuration: const Duration(milliseconds: 500),
@@ -86,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Connexion',
+                          AppLocalizations.of(context)!.login,
                           style: TextStyle(
                             fontSize: 30.0,
                             fontWeight: FontWeight.w900,
@@ -94,18 +92,17 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(height: 40.0),
-                        // Email field with example hint
                         TextFormField(
                           controller: _emailController,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre email';
+                              return AppLocalizations.of(context)!.pleaseEnterEmail;
                             }
                             return null;
                           },
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.email, color: primaryColor),
-                            hintText: 'Ex : marie.dupont@example.com',
+                            hintText: AppLocalizations.of(context)!.emailExample,
                             hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -116,20 +113,19 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(height: 25.0),
-                        // Password field with example hint
                         TextFormField(
                           controller: _passwordController,
                           obscureText: true,
                           obscuringCharacter: '*',
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre mot de passe';
+                              return AppLocalizations.of(context)!.pleaseEnterPassword;
                             }
                             return null;
                           },
                           decoration: InputDecoration(
                             prefixIcon: Icon(Icons.lock, color: primaryColor),
-                            hintText: 'Ex : ••••••••',
+                            hintText: AppLocalizations.of(context)!.passwordExample,
                             hintStyle: const TextStyle(color: Colors.black26),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -154,18 +150,16 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                   activeColor: primaryColor,
                                 ),
-                                const Text(
-                                  'Se souvenir de moi',
-                                  style: TextStyle(color: Colors.black45),
+                                Text(
+                                  AppLocalizations.of(context)!.rememberMe,
+                                  style: const TextStyle(color: Colors.black45),
                                 ),
                               ],
                             ),
                             GestureDetector(
-                              onTap: () {
-                                // Implement password reset logic here
-                              },
+                              onTap: () {},
                               child: Text(
-                                'Mot de passe oublié?',
+                                AppLocalizations.of(context)!.forgotPassword,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: primaryColor,
@@ -187,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             onPressed: _signIn,
-                            child: const Text('Se connecter'),
+                            child: Text(AppLocalizations.of(context)!.login),
                           ),
                         ),
                         const SizedBox(height: 25.0),
@@ -200,11 +194,11 @@ class _LoginPageState extends State<LoginPage> {
                                 color: Colors.grey.withOpacity(0.5),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                'Ou connectez-vous avec',
-                                style: TextStyle(color: Colors.black45),
+                                AppLocalizations.of(context)!.loginWith,
+                                style: const TextStyle(color: Colors.black45),
                               ),
                             ),
                             Expanded(
@@ -229,9 +223,9 @@ class _LoginPageState extends State<LoginPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
-                              'Pas encore de compte? ',
-                              style: TextStyle(color: Colors.black45),
+                            Text(
+                              AppLocalizations.of(context)!.noAccount,
+                              style: const TextStyle(color: Colors.black45),
                             ),
                             GestureDetector(
                               onTap: () {
@@ -239,12 +233,11 @@ class _LoginPageState extends State<LoginPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) => RegisterPage(cameras: widget.cameras),
-
                                   ),
                                 );
                               },
                               child: Text(
-                                "S'inscrire",
+                                AppLocalizations.of(context)!.register,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: primaryColor,

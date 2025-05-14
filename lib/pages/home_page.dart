@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:signrecognizer/l10n/app_localizations.dart';
 
 class StaticHomePage extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -62,9 +63,9 @@ class _StaticHomePageState extends State<StaticHomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Reconnaissance de Signes',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.signRecognition,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -76,10 +77,7 @@ class _StaticHomePageState extends State<StaticHomePage> {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 24),
-
-                  // 🔴 Live camera preview (or fallback)
                   Container(
                     height: 280,
                     decoration: BoxDecoration(
@@ -93,7 +91,7 @@ class _StaticHomePageState extends State<StaticHomePage> {
                         child: ElevatedButton.icon(
                           onPressed: initializeCamera,
                           icon: const Icon(Icons.camera),
-                          label: const Text("Activer la caméra"),
+                          label: Text(AppLocalizations.of(context)!.activateCamera),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.deepPurple,
@@ -104,10 +102,10 @@ class _StaticHomePageState extends State<StaticHomePage> {
                         future: _initializeControllerFuture,
                         builder: (context, snapshot) {
                           if (widget.cameras.isEmpty) {
-                            return const Center(
+                            return Center(
                               child: Text(
-                                'Aucun appareil photo détecté',
-                                style: TextStyle(color: Colors.white70),
+                                AppLocalizations.of(context)!.noCameraDetected,
+                                style: const TextStyle(color: Colors.white70),
                               ),
                             );
                           }
@@ -124,9 +122,7 @@ class _StaticHomePageState extends State<StaticHomePage> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 24),
-
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
@@ -146,13 +142,11 @@ class _StaticHomePageState extends State<StaticHomePage> {
                       textAlign: TextAlign.center,
                     ),
                   ),
-
                   const SizedBox(height: 30),
-
                   ElevatedButton.icon(
                     onPressed: () {},
                     icon: const Icon(Icons.volume_up),
-                    label: const Text("Lire le texte"),
+                    label: Text(AppLocalizations.of(context)!.readText),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

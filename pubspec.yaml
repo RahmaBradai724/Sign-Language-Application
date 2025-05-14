@@ -34,6 +34,10 @@ dependencies:
   camera: ^0.10.0+1
   flutter:
     sdk: flutter
+  flutter_localizations: # Add this line
+    sdk: flutter         # Add this line
+  intl: ^0.17.0         # Add this line
+  provider: ^6.0.5       # Add this line for state management
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -61,6 +65,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
   assets:
     - assets/bg2.png
 
